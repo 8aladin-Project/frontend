@@ -1,0 +1,28 @@
+/* =========================== mypage SellingListTabs CSS =========================== */
+
+.tabsSpread :global(.ant-tabs-nav) {
+  margin: 0; /* 여백 보정 */
+}
+
+.tabsSpread :global(.ant-tabs-nav-list) {
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* 양끝 + 가운데 */
+}
+
+.tabsSpread :global(.ant-tabs-tab) {
+  flex: 1 0 0;
+  display: flex;
+  justify-content: center; /* 라벨 가운데 정렬 */
+}
+
+.tabsSpread :global(.ant-tabs-tab .ant-tabs-tab-btn) {
+  width: 100%;
+  text-align: center;
+}
+
+.tabsSpread :global(.ant-tabs-ink-bar) {
+  transition:
+    transform 0.2s ease,
+    width 0.2s ease;
+}
