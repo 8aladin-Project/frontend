@@ -33,7 +33,8 @@ export default function SellingListTabs({
             children:
               sellingItems.length > 0 ? (
                 <ItemList
-                  sellingItems={sellingItems}
+                  title="판매내역"
+                  items={sellingItems}
                   onItemClick={onItemClick}
                 />
               ) : (
@@ -46,7 +47,8 @@ export default function SellingListTabs({
             children:
               buyingItems.length > 0 ? (
                 <ItemList
-                  sellingItems={buyingItems}
+                  title="구매내역"
+                  items={buyingItems}
                   onItemClick={onItemClick}
                 />
               ) : (
@@ -59,7 +61,8 @@ export default function SellingListTabs({
             children:
               auctionItems.length > 0 ? (
                 <ItemList
-                  sellingItems={auctionItems}
+                  title="경매내역"
+                  items={auctionItems}
                   onItemClick={onItemClick}
                 />
               ) : (

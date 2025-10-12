@@ -9,33 +9,37 @@ import {
   Form,
   Input,
   InputNumber,
-  Radio,
   Row,
   Segmented,
   Select,
-  Space,
+  // Space,
   Typography,
   Upload,
   message,
 } from "antd";
 import {
   LeftOutlined,
-  UploadOutlined,
+  // UploadOutlined,
   InboxOutlined,
   EnvironmentOutlined,
 } from "@ant-design/icons";
 import type { UploadFile, UploadProps } from "antd";
 import styles from "./register.module.css";
-
+import { useRouter } from "next/navigation";
 const { Title, Text } = Typography;
 const { Dragger } = Upload;
 
 export default function Page() {
   const [form] = Form.useForm();
+  const router = useRouter();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const onSubmit = async () => {
     try {
+      if (fileList.length === 0) {
+        message.error("상품 사진을 최소 1장 이상 업로드해주세요.");
+        return;
+      }
       const values = await form.validateFields();
       // 파일은 fileList에 있음
       console.log({ ...values, photos: fileList });
@@ -57,6 +61,12 @@ export default function Page() {
         message.error("이미지 파일만 업로드할 수 있습니다. (jpg, png, gif 등)");
         return Upload.LIST_IGNORE; // 업로드 목록에도 추가되지 않음
       }
+      const isLt5M = file.size / 1024 / 1024 < 5;
+      if (!isLt5M) {
+        message.error("이미지는 5MB 이하로 업로드해주세요.");
+        return Upload.LIST_IGNORE;
+      }
+
       return false; // 실제 업로드는 막고 로컬 미리보기만 허용
     },
     onChange(info) {
@@ -72,13 +82,15 @@ export default function Page() {
       {/* 상단 고정 헤더 */}
       <Affix offsetTop={0}>
         <div className="sticky top-0 z-10 flex items-center justify-between px-3 py-3 bg-white border-b">
-          <Button type="text" icon={<LeftOutlined />} />
+          <Button
+            type="text"
+            icon={<LeftOutlined />}
+            onClick={() => router.back()}
+          />
           <Title level={5} className="!m-0">
             상품 등록
           </Title>
-          <Button type="primary" onClick={onSubmit}>
-            등록
-          </Button>
+          <Button onClick={onSubmit}>등록</Button>
         </div>
       </Affix>
 

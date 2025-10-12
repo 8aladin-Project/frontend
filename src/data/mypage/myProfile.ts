@@ -1,4 +1,4 @@
-// src/data/myProfile.ts
+// src/data/mypage/myProfile.ts
 
 export type ProfileStat = { label: string; value: string };
 
