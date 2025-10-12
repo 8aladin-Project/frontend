@@ -28,7 +28,6 @@ export default function RootLayout({
     <html lang="ko">
       <body className="antialiased">
         <PhoneFrameLayout title="내 프로젝트">
-          {" "}
           <AntdRegistry>{children}</AntdRegistry>
         </PhoneFrameLayout>
       </body>

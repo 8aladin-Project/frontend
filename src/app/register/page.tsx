@@ -71,7 +71,7 @@ export default function Page() {
     <div className="min-h-screen bg-white">
       {/* 상단 고정 헤더 */}
       <Affix offsetTop={0}>
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b bg-white px-3 py-3">
+        <div className="sticky top-0 z-10 flex items-center justify-between px-3 py-3 bg-white border-b">
           <Button type="text" icon={<LeftOutlined />} />
           <Title level={5} className="!m-0">
             상품 등록
@@ -95,7 +95,7 @@ export default function Page() {
               </Text>
             </div>
 
-            <div className="mt-2 rounded-2xl border border-black/10 p-4">
+            <div className="p-4 mt-2 border rounded-2xl border-black/10">
               <Dragger
                 {...draggerProps}
                 className={`${styles.customDragger} !bg-white`}
@@ -160,7 +160,6 @@ export default function Page() {
                   name="price"
                   rules={[{ required: true, message: "가격을 입력해주세요." }]}
                 >
-                  {" "}
                   <div className={styles.customNumber}>
                     <InputNumber<string>
                       stringMode
@@ -169,7 +168,7 @@ export default function Page() {
                         v ? v.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : ""
                       }
                       parser={v => (v ? v.replace(/[^\d.-]/g, "") : "0")}
-                    />{" "}
+                    />
                   </div>
                 </Form.Item>
               </Col>
@@ -219,7 +218,7 @@ export default function Page() {
             </Form.Item>
 
             <div className="rounded-xl bg-gray-50/80 px-4 py-3 text-[13px] leading-6 text-gray-600">
-              <ul className="list-disc pl-5">
+              <ul className="pl-5 list-disc">
                 <li>
                   상품의 브랜드, 구매 시기, 사용감 등을 자세히 적어주세요.
                 </li>
