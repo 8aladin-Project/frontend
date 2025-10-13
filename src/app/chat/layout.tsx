@@ -1,3 +1,4 @@
+import Footer from "@/components/layout/Footer";
 import { SettingOutlined } from "@ant-design/icons";
 
 export default function ChatListLayout({
@@ -12,7 +13,8 @@ export default function ChatListLayout({
         <h1 className="text-xl font-bold m-0">채팅</h1>
         <SettingOutlined />
       </header>
-      <main className="flex-1 overflow-y-auto">{children}</main>
+      <main className="flex-1 overflow-y-auto pb-16">{children}</main>
+      <Footer />
     </div>
   );
 }

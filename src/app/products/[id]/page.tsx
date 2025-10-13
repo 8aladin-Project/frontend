@@ -16,7 +16,7 @@ export default function Page() {
     "https://shopping-phinf.pstatic.net/main_3247334/32473346832.20221227204218.jpg",
   ];
   return (
-    <div className="flex h-full flex-col bg-gray-100">
+    <div className="flex flex-col h-full bg-gray-100">
       <header>
         <div className="top-0 w-[600px] h-[50px] bg-[#232323] text-white flex items-center justify-center mx-auto">
           <div>
@@ -43,7 +43,7 @@ export default function Page() {
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         <div className="w-[600px] h-[600px] border">
-          <img src={images[0]} className="w-full h-full object-cover" />
+          <img src={images[0]} className="object-cover w-full h-full" />
         </div>
         <div>
           {images.map((image, index) => (
@@ -51,7 +51,7 @@ export default function Page() {
               key={index}
               className="border-[3px] border-[#E5E7EB] rounded-2xl mx-1 my-3 hover:border-black"
             >
-              <img src={image} className="w-20 h-20 rounded-2xl object-cover" />
+              <img src={image} className="object-cover w-20 h-20 rounded-2xl" />
             </button>
           ))}
         </div>
@@ -59,7 +59,7 @@ export default function Page() {
           <div className="w-[50px] h-[50px] ml-[10px] mr-[10px]">
             <img
               src="https://shopping-phinf.pstatic.net/main_3888828/38888282618.20230913071643.jpg"
-              className="w-full h-full object-cover rounded-full"
+              className="object-cover w-full h-full rounded-full"
             />
           </div>
           <div className="ml-[10px]">

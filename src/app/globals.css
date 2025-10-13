@@ -37,7 +37,7 @@ body {
   /* 메인: 바텀과 겹치지 않도록 패딩 */
   .main {
     @apply flex-1 bg-white;
-    padding-top: calc(env(safe-area-inset-top, 0px) + var(--header-h, 56px));
+    /* padding-top: calc(env(safe-area-inset-top, 0px) + var(--header-h, 56px)); */
     padding-bottom: calc(
       env(safe-area-inset-bottom, 0px) + var(--bottom-h, 64px)
     );

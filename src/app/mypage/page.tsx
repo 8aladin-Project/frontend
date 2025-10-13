@@ -1,6 +1,6 @@
 // app/mypage/page.tsx
 import Header from "./Header";
-import BottomNav from "./BottomNav";
+import Footer from "@/components/layout/Footer";
 import MyPage from "./MyPage";
 
 export default function Page() {
@@ -12,8 +12,7 @@ export default function Page() {
       <main className="main">
         <MyPage />
       </main>
-      <BottomNav />
+      <Footer />
     </div>
   );
 }
-// commit 다시
