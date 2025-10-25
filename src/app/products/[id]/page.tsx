@@ -10,11 +10,19 @@ import {
 import { useState } from "react";
 
 export default function Page() {
+  const [clickedIndex, setClickedIndex] = useState<number | null>(null);
   const images = [
     "https://shopping-phinf.pstatic.net/main_3888828/38888282618.20230913071643.jpg",
     "https://shopping-phinf.pstatic.net/main_4731061/47310617618.20240426090954.jpg",
     "https://shopping-phinf.pstatic.net/main_3247334/32473346832.20221227204218.jpg",
   ];
+
+  const clickEffect = (index: number) => {
+    setClickedIndex(index);
+    setTimeout(() => setClickedIndex(null), 150)
+    console.log("click");
+  }
+
   return (
     <div className="flex flex-col h-full bg-gray-100">
       <header>
@@ -49,7 +57,8 @@ export default function Page() {
           {images.map((image, index) => (
             <button
               key={index}
-              className="border-[3px] border-[#E5E7EB] rounded-2xl mx-1 my-3 hover:border-black"
+              onClick={() => clickEffect(index)}
+              className={`border-[3px] border-[#E5E7EB] rounded-2xl mx-1 my-3 ${clickedIndex === index ? 'scale-95 ring-4 ring-black' : ''}`}
             >
               <img src={image} className="object-cover w-20 h-20 rounded-2xl" />
             </button>
