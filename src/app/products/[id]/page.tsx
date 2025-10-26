@@ -19,9 +19,24 @@ export default function Page() {
 
   const clickEffect = (index: number) => {
     setClickedIndex(index);
-    setTimeout(() => setClickedIndex(null), 150)
+    setTimeout(() => setClickedIndex(null), 150);
     console.log("click");
-  }
+  };
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "상품 제목",
+          url: window.location.href,
+        });
+      } catch (err) {
+        console.log("공유 실패", err);
+      }
+    } else {
+      alert("이 브라우저는 공유 기능을 제공하지 않습니다.");
+    }
+  };
 
   return (
     <div className="flex flex-col h-full bg-gray-100">
@@ -39,7 +54,7 @@ export default function Page() {
             <h1 className="m-0 font-bold">상품 상세</h1>
           </div>
           <div>
-            <button>
+            <button onClick={handleShare}>
               <ShareAltOutlined className="text-[20px]" />
             </button>
           </div>
@@ -58,7 +73,7 @@ export default function Page() {
             <button
               key={index}
               onClick={() => clickEffect(index)}
-              className={`border-[3px] border-[#E5E7EB] rounded-2xl mx-1 my-3 ${clickedIndex === index ? 'scale-95 ring-4 ring-black' : ''}`}
+              className={`border-[3px] border-[#E5E7EB] rounded-2xl mx-1 my-3 ${clickedIndex === index ? "scale-95 ring-4 ring-black" : ""}`}
             >
               <img src={image} className="object-cover w-20 h-20 rounded-2xl" />
             </button>
@@ -125,4 +140,3 @@ export default function Page() {
     </div>
   );
 }
-// pr용 주석
