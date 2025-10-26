@@ -8,6 +8,7 @@ import {
   ShoppingCartOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
+import { Tag } from "antd";
 
 export default function Page() {
   const [clickedIndex, setClickedIndex] = useState<number | null>(null);
@@ -94,8 +95,11 @@ export default function Page() {
             <button>프로필 보기</button>
           </div>
         </div>
-        <div className="text-[20px] mt-[20px] ml-[20px]">
-          <h1 className="font-bold">닌텐도 스위치 OLED 화이트</h1>
+        <div className="text-[20px] flex items-center mt-[20px] ml-[20px]">
+          <h1 className="font-bold mr-2 mb-0">닌텐도 스위치 OLED 화이트</h1>
+          <Tag color="success" className="!rounded-full !px-2 !py-0.5">
+            판매중
+          </Tag>
         </div>
         <div className="text-[30px] ml-[20px] mt-[20px]">
           <h1 className="font-bold">320,000원</h1>
