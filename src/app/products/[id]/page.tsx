@@ -101,8 +101,9 @@ export default function Page() {
             판매중
           </Tag>
         </div>
-        <div className="text-[30px] ml-[20px] mt-[20px]">
-          <h1 className="font-bold">320,000원</h1>
+        <div className=" flex ml-[20px] mt-[20px]">
+          <h1 className="font-bold text-[30px] ">320,000원</h1>
+          <p className="text-lg mt-2 mb-0 ml-1 text-[#697281]">1일전</p>
         </div>
         <div className="font-semi bold ml-[20px]">
           <p>
