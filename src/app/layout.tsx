@@ -4,6 +4,7 @@ import "./globals.css";
 import "antd/dist/reset.css";
 import AntdRegistry from "./antd-registry";
 import PhoneFrameLayout from "@/components/layout/PhoneFrameLayout";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

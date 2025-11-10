@@ -12,6 +12,7 @@ type SellingListTabsProps = {
   auctionItems?: SellingItem[];
   className?: string;
   onItemClick?: (item: SellingItem) => void;
+  hideBuyTab?: boolean;
 };
 
 export default function SellingListTabs({
@@ -20,27 +21,26 @@ export default function SellingListTabs({
   auctionItems = [],
   className = "",
   onItemClick,
+  hideBuyTab = false,
 }: SellingListTabsProps) {
-  return (
-    <section className="mt-4">
-      <Tabs
-        defaultActiveKey="sell"
-        className={`${styles.tabsSpread} ${className} [--ant-tabs-ink-bar-color:#232323] [--ant-tabs-active-color:#232323]`}
-        items={[
-          {
-            key: "sell",
-            label: <span className="text-[#232323]">판매내역</span>,
-            children:
-              sellingItems.length > 0 ? (
-                <ItemList
-                  title="판매내역"
-                  items={sellingItems}
-                  onItemClick={onItemClick}
-                />
-              ) : (
-                <EmptyBlock text="판매내역이 없습니다." />
-              ),
-          },
+  const tabItems = [
+    {
+      key: "sell",
+      label: <span className="text-[#232323]">판매내역</span>,
+      children:
+        sellingItems.length > 0 ? (
+          <ItemList
+            title="판매내역"
+            items={sellingItems}
+            onItemClick={onItemClick}
+          />
+        ) : (
+          <EmptyBlock text="판매내역이 없습니다." />
+        ),
+    },
+    ...(hideBuyTab
+      ? []
+      : [
           {
             key: "buy",
             label: "구매내역",
@@ -55,21 +55,29 @@ export default function SellingListTabs({
                 <EmptyBlock text="구매내역이 없습니다." />
               ),
           },
-          {
-            key: "auction",
-            label: "경매내역",
-            children:
-              auctionItems.length > 0 ? (
-                <ItemList
-                  title="경매내역"
-                  items={auctionItems}
-                  onItemClick={onItemClick}
-                />
-              ) : (
-                <EmptyBlock text="경매내역이 없습니다." />
-              ),
-          },
-        ]}
+        ]),
+    {
+      key: "auction",
+      label: "경매내역",
+      children:
+        auctionItems.length > 0 ? (
+          <ItemList
+            title="경매내역"
+            items={auctionItems}
+            onItemClick={onItemClick}
+          />
+        ) : (
+          <EmptyBlock text="경매내역이 없습니다." />
+        ),
+    },
+  ];
+
+  return (
+    <section className="mt-4">
+      <Tabs
+        defaultActiveKey="sell"
+        className={`${styles.tabsSpread} ${className} [--ant-tabs-ink-bar-color:#232323] [--ant-tabs-active-color:#232323]`}
+        items={tabItems}
       />
     </section>
   );

@@ -6,7 +6,13 @@ import { EnvironmentOutlined, EditOutlined } from "@ant-design/icons";
 import { ProfileData } from "@/data/mypage/myProfile";
 const { Title, Text } = Typography;
 
-export default function ProfileSection({ profile }: { profile: ProfileData }) {
+export default function ProfileSection({
+  profile,
+  showEditIcon = true,
+}: {
+  profile: ProfileData;
+  showEditIcon?: boolean;
+}) {
   const {
     name,
     verified,
@@ -57,9 +63,11 @@ export default function ProfileSection({ profile }: { profile: ProfileData }) {
           </Col>
 
           {/* 오른쪽 편집 아이콘 */}
-          <Col flex="none">
-            <EditOutlined className="text-xl text-gray-500" />
-          </Col>
+          {showEditIcon && (
+            <Col flex="none">
+              <EditOutlined className="text-xl text-gray-500" />
+            </Col>
+          )}
         </Row>
 
         <Divider className="!my-4" />
