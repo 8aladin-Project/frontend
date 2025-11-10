@@ -15,7 +15,7 @@ const Footer = () => {
       label: "홈",
     },
     {
-      href: null, // 검색은 라우터 없음
+      href: "/search",
       icon: "/mainpage/magnifying-glass.svg",
       alt: "검색",
       label: "검색",
@@ -47,30 +47,6 @@ const Footer = () => {
           {navItems.map((item, index) => {
             const isActive = pathname === item.href;
 
-            // 라우터가 없는 경우 (검색)
-            if (!item.href) {
-              return (
-                <div
-                  key={index}
-                  className="flex flex-col items-center py-2 cursor-default"
-                >
-                  <Image
-                    src={item.icon}
-                    alt={item.alt}
-                    width={24}
-                    height={24}
-                    className="w-6 h-6 mb-1"
-                    style={{
-                      filter:
-                        "brightness(0) saturate(100%) invert(14%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0.14) contrast(100%)",
-                    }}
-                  />
-                  <span className="text-xs text-[#232323]">{item.label}</span>
-                </div>
-              );
-            }
-
-            // 라우터가 있는 경우
             return (
               <Link
                 key={index}
