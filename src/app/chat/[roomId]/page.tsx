@@ -2,12 +2,13 @@ import Link from "next/link";
 import Image from "next/image";
 import ChatRoomLayout from "./chatRoomLayout";
 import { getChatRoomDetails, getMessages } from "@/api/chat/apis";
+import ChatInputSection from "./chatInputSection";
 
 const suggestedReplies = [
-  "가격 문의",
-  "거래 장소",
-  "상품 상태",
-  "직거래 가능한가요?",
+  { label: "가격 문의", message: "가격이 어떻게 되나요?" },
+  { label: "거래 장소", message: "어디에서 거래 가능할까요?" },
+  { label: "상품 상태", message: "상품 상태가 어떤가요? 사용 흔적이 있나요?" },
+  { label: "직거래 가능한가요?", message: "직거래도 가능한가요?" },
 ];
 
 export default async function ChatRoomPage({
@@ -107,7 +108,7 @@ export default async function ChatRoomPage({
         </main>
 
         {/* 추천 답변 및 입력창 */}
-        <footer className="sticky bottom-0 bg-white pt-2">
+        {/* <footer className="sticky bottom-0 bg-white pt-2">
           <div className="flex space-x-2 overflow-x-auto whitespace-nowrap p-2">
             {suggestedReplies.map(reply => (
               <button
@@ -127,7 +128,8 @@ export default async function ChatRoomPage({
             />
             <button className="p-2 text-gray-500">🙂</button>
           </div>
-        </footer>
+        </footer> */}
+        <ChatInputSection suggestedReplies={suggestedReplies} />
       </div>
     </ChatRoomLayout>
   );
