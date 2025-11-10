@@ -37,7 +37,7 @@ export async function getMessages(roomId: string) {
     {
       id: 5,
       sender: "other",
-      text: "평일 저녁 7시 이후나 주말 언데든지 가능합니다. 강남역 근처에서 만나면 될 것 같아요.",
+      text: "평일 저녁 7시 이후나 주말 언제든지 가능합니다. 강남역 근처에서 만나면 될 것 같아요.",
       timestamp: "14:36",
     },
   ];
