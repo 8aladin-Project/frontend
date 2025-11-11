@@ -1,18 +1,9 @@
 "use client";
 
 import React from "react";
-import { Typography, Badge } from "antd";
-import {
-  HeartOutlined,
-  StarOutlined,
-  SafetyOutlined,
-  CreditCardOutlined,
-  SettingOutlined,
-  CustomerServiceOutlined,
-} from "@ant-design/icons";
 
 import ProfileSection from "@/components/profile/ProfileSection";
-import { sellingItems, type SellingItem } from "@/data/profile/sellingItems";
+import { sellingItems } from "@/data/profile/sellingItems";
 import SellingListTabs from "@/components/profile/SellingListTabs";
 import { userProfile } from "@/data/profile/myProfile";
 
@@ -31,19 +22,6 @@ export default function UserProfile() {
           // router.push(`/items/${item.id}`);
         }}
       />
-    </div>
-  );
-}
-
-function Shortcut({ icon, label }: { icon: React.ReactNode; label: string }) {
-  return (
-    <div className="flex flex-col items-center">
-      <Badge count={0} size="small">
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 text-xl text-gray-700">
-          {icon}
-        </div>
-      </Badge>
-      <div className="mt-2 text-[13px] text-gray-600">{label}</div>
     </div>
   );
 }
