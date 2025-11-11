@@ -12,12 +12,12 @@ import {
 } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 
-import ProfileSection from "@/components/mypage/ProfileSection";
-import { sellingItems } from "@/data/mypage/sellingItems";
-import SellingListTabs from "@/components/mypage/SellingListTabs";
-import { myProfile } from "@/data/mypage/myProfile";
+import ProfileSection from "@/components/profile/ProfileSection";
+import { sellingItems } from "@/data/profile/sellingItems";
+import SellingListTabs from "@/components/profile/SellingListTabs";
+import { myProfile } from "@/data/profile/myProfile";
 
-export default function MyPage() {
+export default function Profile() {
   const router = useRouter();
 
   const handleInterestClick = () => {

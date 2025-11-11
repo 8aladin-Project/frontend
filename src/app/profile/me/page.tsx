@@ -1,6 +1,6 @@
-// app/mypage/page.tsx
+// app/profile/me/page.tsx
 
-import MyPage from "./MyPage";
+import Profile from "./Profile";
 
 export default function Page() {
   return (
@@ -8,7 +8,7 @@ export default function Page() {
       className="shell" /* style={{ ['--header-h' as any]:'56px', ['--bottom-h' as any]:'64px' }} */
     >
       <main className="main">
-        <MyPage />
+        <Profile />
       </main>
     </div>
   );

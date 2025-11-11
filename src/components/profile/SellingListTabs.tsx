@@ -2,8 +2,8 @@
 
 import React from "react";
 import { Tabs } from "antd";
-import type { SellingItem } from "@/data/mypage/sellingItems";
-import ItemList from "@/components/mypage/ItemList";
+import type { SellingItem } from "@/data/profile/sellingItems";
+import ItemList from "@/components/profile/ItemList";
 import styles from "./sellingListTabs.module.css";
 
 type SellingListTabsProps = {

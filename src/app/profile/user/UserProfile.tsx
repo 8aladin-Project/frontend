@@ -11,12 +11,12 @@ import {
   CustomerServiceOutlined,
 } from "@ant-design/icons";
 
-import ProfileSection from "@/components/mypage/ProfileSection";
-import { sellingItems, type SellingItem } from "@/data/mypage/sellingItems";
-import SellingListTabs from "@/components/mypage/SellingListTabs";
-import { userProfile } from "@/data/mypage/myProfile";
+import ProfileSection from "@/components/profile/ProfileSection";
+import { sellingItems, type SellingItem } from "@/data/profile/sellingItems";
+import SellingListTabs from "@/components/profile/SellingListTabs";
+import { userProfile } from "@/data/profile/myProfile";
 
-export default function MyPage() {
+export default function UserProfile() {
   return (
     <div className="min-h-full bg-white px-4">
       {/* 프로필 */}

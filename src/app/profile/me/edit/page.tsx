@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Button, Form, Input, message, Space, Switch, Typography } from "antd";
 import { useRouter } from "next/navigation";
-import { myProfile } from "@/data/mypage/myProfile";
+import { myProfile } from "@/data/profile/myProfile";
 
 const { Title, Paragraph } = Typography;
 const { TextArea } = Input;

@@ -1,4 +1,4 @@
-// /data/mypage/sellingItems.ts
+// /data/profile/sellingItems.ts
 export type SellingItem = {
   id: number;
   title: string;

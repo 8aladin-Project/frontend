@@ -1,4 +1,4 @@
-// app/mypage/page.tsx
+// app/profile/page.tsx
 
 import UserProfile from "./UserProfile";
 

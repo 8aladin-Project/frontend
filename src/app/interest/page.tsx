@@ -5,7 +5,7 @@ import { Tabs } from "antd";
 import type { InterestItem } from "@/data/interest/interestItems";
 import { interestItems } from "@/data/interest/interestItems";
 import InterestList from "@/components/interest/InterestList";
-import styles from "@/components/mypage/sellingListTabs.module.css";
+import styles from "@/components/profile/sellingListTabs.module.css";
 
 export default function InterestPage() {
   const [items, setItems] = useState<InterestItem[]>(interestItems);

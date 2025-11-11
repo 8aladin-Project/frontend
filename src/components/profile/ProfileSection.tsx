@@ -3,7 +3,7 @@
 import React from "react";
 import { Avatar, Row, Col, Space, Tag, Divider, Typography } from "antd";
 import { EnvironmentOutlined, EditOutlined } from "@ant-design/icons";
-import { ProfileData } from "@/data/mypage/myProfile";
+import { ProfileData } from "@/data/profile/myProfile";
 import { useRouter } from "next/navigation";
 const { Title, Text } = Typography;
 

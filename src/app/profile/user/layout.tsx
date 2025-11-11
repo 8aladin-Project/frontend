@@ -1,5 +1,5 @@
 import ClientLayout from "@/components/layout/ClientLayout";
-import { userProfile } from "@/data/mypage/myProfile";
+import { userProfile } from "@/data/profile/myProfile";
 
 export default function ProfileUserLayout({
   children,
