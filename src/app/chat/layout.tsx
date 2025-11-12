@@ -14,7 +14,7 @@ export default function ChatListLayout({
         <SettingOutlined />
       </header>
       <main className="flex-1 overflow-y-auto pb-16">{children}</main>
-      <Footer />
+      <Footer children={undefined} />
     </div>
   );
 }

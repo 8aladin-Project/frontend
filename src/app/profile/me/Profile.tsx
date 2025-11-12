@@ -10,13 +10,20 @@ import {
   SettingOutlined,
   CustomerServiceOutlined,
 } from "@ant-design/icons";
+import { useRouter } from "next/navigation";
 
-import ProfileSection from "@/components/mypage/ProfileSection";
-import { sellingItems, type SellingItem } from "@/data/mypage/sellingItems";
-import SellingListTabs from "@/components/mypage/SellingListTabs";
-import { myProfile } from "@/data/mypage/myProfile";
+import ProfileSection from "@/components/profile/ProfileSection";
+import { sellingItems } from "@/data/profile/sellingItems";
+import SellingListTabs from "@/components/profile/SellingListTabs";
+import { myProfile } from "@/data/profile/myProfile";
 
-export default function MyPage() {
+export default function Profile() {
+  const router = useRouter();
+
+  const handleInterestClick = () => {
+    router.push("/interest");
+  };
+
   return (
     <div className="min-h-full bg-white px-4">
       {/* 프로필 */}
@@ -25,7 +32,11 @@ export default function MyPage() {
       {/* 바로가기 아이콘 그리드 */}
       <section className="mt-4">
         <div className="grid grid-cols-3 gap-y-6 rounded-2xl border border-gray-100 p-5 shadow-sm">
-          <Shortcut icon={<HeartOutlined />} label="관심목록" />
+          <Shortcut
+            icon={<HeartOutlined />}
+            label="관심목록"
+            onClick={handleInterestClick}
+          />
           <Shortcut icon={<StarOutlined />} label="내 후기" />
           <Shortcut icon={<SafetyOutlined />} label="지역 인증" />
           <Shortcut icon={<CreditCardOutlined />} label="판매수익" />
@@ -46,9 +57,20 @@ export default function MyPage() {
   );
 }
 
-function Shortcut({ icon, label }: { icon: React.ReactNode; label: string }) {
+function Shortcut({
+  icon,
+  label,
+  onClick,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  onClick?: () => void;
+}) {
   return (
-    <div className="flex flex-col items-center">
+    <div
+      className={`flex flex-col items-center ${onClick ? "cursor-pointer" : ""}`}
+      onClick={onClick}
+    >
       <Badge count={0} size="small">
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 text-xl text-gray-700">
           {icon}
