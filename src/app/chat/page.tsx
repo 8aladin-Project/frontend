@@ -1,6 +1,12 @@
-import Link from "next/link";
-import Image from "next/image";
+// src/app/chat/page.tsx
+// 채팅 목록 페이지.
+// 더미 데이터를 가져와서 ChatRoomListLoader 컴포넌트에 전달합니다.
+
+// import Link from "next/link";
+// import Image from "next/image";
 import { SearchOutlined } from "@ant-design/icons";
+// import ChatRoomList from "./chatRoomList";
+import ChatRoomListLoader from "./chatRoomListLoader";
 
 // 더미 데이터
 async function getChatRooms() {
@@ -42,7 +48,7 @@ async function getChatRooms() {
 }
 
 export default async function ChatListPage() {
-  const rooms = await getChatRooms();
+  const rooms = await getChatRooms(); // 서버 컴포넌트에서 받은 데이터
 
   return (
     <div className="flex h-full flex-col bg-white">
@@ -62,51 +68,10 @@ export default async function ChatListPage() {
         </div>
       </header>
 
-      {/* 채팅 목록 */}
-      <main className="flex-1 overflow-y-auto">
-        <ul>
-          {rooms.map(room => (
-            <li key={room.id}>
-              <Link href={`/chat/${room.id}`} className="flex space-x-4 p-4">
-                {/* 상품 이미지 */}
-                <div className="relative h-14 w-14 flex-shrink-0">
-                  <Image
-                    src={room.productImage}
-                    alt={room.productName}
-                    width={56}
-                    height={56}
-                    className="rounded-md object-cover"
-                  />
-                  {room.isOnline && (
-                    <span className="absolute -bottom-1 -right-1 block h-3 w-3 rounded-full border-2 border-white bg-green-500" />
-                  )}
-                </div>
-
-                {/* 채팅 정보 */}
-                <div className="flex-1 overflow-hidden">
-                  <p className="font-semibold text-gray-800">{room.userName}</p>
-                  <p className="truncate text-sm text-gray-600">
-                    {room.lastMessage}
-                  </p>
-                  <p className="mt-1 truncate text-xs text-gray-400">
-                    {room.productName} &middot; {room.price.toLocaleString()}원
-                  </p>
-                </div>
-
-                {/* 시간 및 안 읽은 메시지 */}
-                <div className="flex flex-col items-end space-y-1 text-xs text-gray-400">
-                  <p>{room.timestamp}</p>
-                  {room.unreadCount > 0 && (
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                      {room.unreadCount}
-                    </span>
-                  )}
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </main>
+      {/* 기존 방식의 채팅 목록 */}
+      {/* <ChatRoomList rooms={rooms} /> */}
+      {/* 새로운 방식의 채팅 목록. 목록 렌더링을 ChatRoomListLoader 컴포넌트가 담당 */}
+      <ChatRoomListLoader initialRooms={rooms} />
     </div>
   );
 }

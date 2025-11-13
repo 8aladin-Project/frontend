@@ -8,13 +8,37 @@ import {
   ShoppingCartOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
+import { Tag } from "antd";
 
 export default function Page() {
+  const [clickedIndex, setClickedIndex] = useState<number | null>(null);
   const images = [
     "https://shopping-phinf.pstatic.net/main_3888828/38888282618.20230913071643.jpg",
     "https://shopping-phinf.pstatic.net/main_4731061/47310617618.20240426090954.jpg",
     "https://shopping-phinf.pstatic.net/main_3247334/32473346832.20221227204218.jpg",
   ];
+
+  const clickEffect = (index: number) => {
+    setClickedIndex(index);
+    setTimeout(() => setClickedIndex(null), 150);
+    console.log("click");
+  };
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "상품 제목",
+          url: window.location.href,
+        });
+      } catch (err) {
+        console.log("공유 실패", err);
+      }
+    } else {
+      alert("이 브라우저는 공유 기능을 제공하지 않습니다.");
+    }
+  };
+
   return (
     <div className="flex flex-col h-full bg-gray-100">
       <header>
@@ -31,7 +55,7 @@ export default function Page() {
             <h1 className="m-0 font-bold">상품 상세</h1>
           </div>
           <div>
-            <button>
+            <button onClick={handleShare}>
               <ShareAltOutlined className="text-[20px]" />
             </button>
           </div>
@@ -49,7 +73,8 @@ export default function Page() {
           {images.map((image, index) => (
             <button
               key={index}
-              className="border-[3px] border-[#E5E7EB] rounded-2xl mx-1 my-3 hover:border-black"
+              onClick={() => clickEffect(index)}
+              className={`border-[3px] border-[#E5E7EB] rounded-2xl mx-1 my-3 ${clickedIndex === index ? "scale-95 ring-4 ring-black" : ""}`}
             >
               <img src={image} className="object-cover w-20 h-20 rounded-2xl" />
             </button>
@@ -70,11 +95,15 @@ export default function Page() {
             <button>프로필 보기</button>
           </div>
         </div>
-        <div className="text-[20px] mt-[20px] ml-[20px]">
-          <h1 className="font-bold">닌텐도 스위치 OLED 화이트</h1>
+        <div className="text-[20px] flex items-center mt-[20px] ml-[20px]">
+          <h1 className="font-bold mr-2 mb-0">닌텐도 스위치 OLED 화이트</h1>
+          <Tag color="success" className="!rounded-full !px-2 !py-0.5">
+            판매중
+          </Tag>
         </div>
-        <div className="text-[30px] ml-[20px] mt-[20px]">
-          <h1 className="font-bold">320,000원</h1>
+        <div className=" flex ml-[20px] mt-[20px]">
+          <h1 className="font-bold text-[30px] ">320,000원</h1>
+          <p className="text-lg mt-2 mb-0 ml-1 text-[#697281]">1일전</p>
         </div>
         <div className="font-semi bold ml-[20px]">
           <p>
@@ -116,4 +145,3 @@ export default function Page() {
     </div>
   );
 }
-// pr용 주석
