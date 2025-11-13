@@ -1,0 +1,81 @@
+.header {
+  background-color: #232323;
+  color: #ffffff;
+  padding: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  position: relative;
+}
+
+/* 뒤로가기 버튼이 없을 때 오른쪽 아이콘들을 오른쪽 끝으로 정렬 */
+.headerContent.noBackButton .rightIcons {
+  margin-left: auto;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.backButton:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.backButton:active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.rightIcons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rightIcons button {
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.rightIcons button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.rightIcons button:active {
+  background-color: rgba(255, 255, 255, 0.2);
+}

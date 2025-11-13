@@ -3,10 +3,17 @@
 import React from "react";
 import { Avatar, Row, Col, Space, Tag, Divider, Typography } from "antd";
 import { EnvironmentOutlined, EditOutlined } from "@ant-design/icons";
-import { ProfileData } from "@/data/mypage/myProfile";
+import { ProfileData } from "@/data/profile/myProfile";
+import { useRouter } from "next/navigation";
 const { Title, Text } = Typography;
 
-export default function ProfileSection({ profile }: { profile: ProfileData }) {
+export default function ProfileSection({
+  profile,
+  showEditIcon = true,
+}: {
+  profile: ProfileData;
+  showEditIcon?: boolean;
+}) {
   const {
     name,
     verified,
@@ -16,6 +23,11 @@ export default function ProfileSection({ profile }: { profile: ProfileData }) {
     avatarColor = "#fff",
     stats,
   } = profile;
+  const router = useRouter();
+
+  const handleEditClick = () => {
+    router.push("/profile/me/edit");
+  };
 
   return (
     <section className="pt-5">
@@ -57,9 +69,18 @@ export default function ProfileSection({ profile }: { profile: ProfileData }) {
           </Col>
 
           {/* 오른쪽 편집 아이콘 */}
-          <Col flex="none">
-            <EditOutlined className="text-xl text-gray-500" />
-          </Col>
+          {showEditIcon && (
+            <Col flex="none">
+              <button
+                type="button"
+                className="rounded-full p-2 text-xl text-gray-500 transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                onClick={handleEditClick}
+                aria-label="회원정보 수정"
+              >
+                <EditOutlined />
+              </button>
+            </Col>
+          )}
         </Row>
 
         <Divider className="!my-4" />

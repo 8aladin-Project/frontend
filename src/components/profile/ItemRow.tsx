@@ -2,7 +2,7 @@
 
 import React, { memo } from "react";
 import { List, Tag } from "antd";
-import type { SellingItem } from "@/data/mypage/sellingItems";
+import type { SellingItem } from "@/data/profile/sellingItems";
 
 type ItemRowProps = {
   item: SellingItem;

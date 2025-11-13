@@ -2,8 +2,8 @@
 
 import React from "react";
 import { List } from "antd";
-import type { SellingItem } from "@/data/mypage/sellingItems";
-import ItemRow from "@/components/mypage/ItemRow";
+import type { SellingItem } from "@/data/profile/sellingItems";
+import ItemRow from "@/components/profile/ItemRow";
 
 type ItemListProps = {
   title: string;
@@ -16,9 +16,7 @@ export default function ItemList({ title, items, onItemClick }: ItemListProps) {
     <div>
       <div className="flex items-center justify-between py-2 text-gray-600">
         <span className="text-base font-bold pl-2">{title}</span>
-        <span className="text-base font-semibold pr-2">
-          {items.length}개
-        </span>
+        <span className="text-base font-semibold pr-2">{items.length}개</span>
       </div>
 
       <List

@@ -23,6 +23,7 @@ export default function ChatListLayout({
         {/* ChatEditProvider와 ChatListHeader 쓰기 전에 사용하던 기존 헤더. 다시 쓰려면 아이콘도 import 해야 함 */}
         {/* <header className="flex flex-row justify-between items-center sticky top-0 z-10 border-b bg-white p-4"> */}
         {/* h1에 기본 marginBottom: 10px이 있어서 초기화 */}
+
         {/* <h1 className="text-xl font-bold m-0">채팅</h1> */}
         {/* <SettingOutlined /> */}
         {/* </header> */}

@@ -1,13 +1,10 @@
-//chatFooter
-import React from "react";
-import styles from "./Footer.module.css";
-
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const Footer = () => {
+const BottomNavigationBar = () => {
   const pathname = usePathname();
 
   const navItems = [
@@ -24,19 +21,13 @@ const Footer = () => {
       label: "검색",
     },
     {
-      href: "/register",
-      icon: "/mainpage/plus.svg",
-      alt: "등록",
-      label: "등록",
-    },
-    {
       href: "/chat",
       icon: "/mainpage/chat.svg",
       alt: "채팅",
       label: "채팅",
     },
     {
-      href: "/mypage",
+      href: "/profile/me",
       icon: "/mainpage/user.svg",
       alt: "마이페이지",
       label: "마이페이지",
@@ -46,7 +37,7 @@ const Footer = () => {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-30">
       <div className="max-w-[600px] mx-auto bg-white border-t border-gray-200">
-        <div className="grid grid-cols-5 items-center py-2 px-4">
+        <div className="flex justify-around items-center py-2 px-4">
           {navItems.map((item, index) => {
             const isActive = pathname === item.href;
 
@@ -62,13 +53,9 @@ const Footer = () => {
                     alt={item.alt}
                     width={24}
                     height={24}
-                    className="w-6 h-6 mb-1"
-                    style={{
-                      filter:
-                        "brightness(0) saturate(100%) invert(14%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0.14) contrast(100%)",
-                    }}
+                    className="w-6 h-6 mb-1 opacity-70"
                   />
-                  <span className="text-xs text-[#232323]">{item.label}</span>
+                  <span className="text-xs text-black">{item.label}</span>
                 </div>
               );
             }
@@ -85,14 +72,10 @@ const Footer = () => {
                   alt={item.alt}
                   width={24}
                   height={24}
-                  className="w-6 h-6 mb-1"
-                  style={{
-                    filter:
-                      "brightness(0) saturate(100%) invert(14%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0.14) contrast(100%)",
-                  }}
+                  className={`w-6 h-6 mb-1 ${isActive ? "" : "opacity-70"}`}
                 />
                 <span
-                  className={`text-xs text-[#232323] ${isActive ? "font-medium" : ""}`}
+                  className={`text-xs ${isActive ? "text-black font-medium" : "text-gray-600"}`}
                 >
                   {item.label}
                 </span>
@@ -105,5 +88,4 @@ const Footer = () => {
   );
 };
 
-
-export default Footer;
+export default BottomNavigationBar;
