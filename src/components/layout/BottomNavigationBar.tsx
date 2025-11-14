@@ -21,6 +21,12 @@ const BottomNavigationBar = () => {
       label: "검색",
     },
     {
+      href: "/register",
+      icon: "/mainpage/plus.svg",
+      alt: "등록",
+      label: "등록",
+    },
+    {
       href: "/chat",
       icon: "/mainpage/chat.svg",
       alt: "채팅",
@@ -35,7 +41,7 @@ const BottomNavigationBar = () => {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-30">
+    <div className="bottom-0 w-full z-30 sticky ">
       <div className="max-w-[600px] mx-auto bg-white border-t border-gray-200">
         <div className="flex justify-around items-center py-2 px-4">
           {navItems.map((item, index) => {
@@ -54,8 +60,12 @@ const BottomNavigationBar = () => {
                     width={24}
                     height={24}
                     className="w-6 h-6 mb-1 opacity-70"
+                    style={{
+                      filter:
+                        "brightness(0) saturate(100%) invert(14%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0.14) contrast(100%)",
+                    }}
                   />
-                  <span className="text-xs text-black">{item.label}</span>
+                  <span className="text-xs text-[#232323]">{item.label}</span>
                 </div>
               );
             }
@@ -73,9 +83,13 @@ const BottomNavigationBar = () => {
                   width={24}
                   height={24}
                   className={`w-6 h-6 mb-1 ${isActive ? "" : "opacity-70"}`}
+                  style={{
+                    filter:
+                      "brightness(0) saturate(100%) invert(14%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0.14) contrast(100%)",
+                  }}
                 />
                 <span
-                  className={`text-xs ${isActive ? "text-black font-medium" : "text-gray-600"}`}
+                  className={`text-xs text-[#232323] ${isActive ? "font-medium" : ""}`}
                 >
                   {item.label}
                 </span>

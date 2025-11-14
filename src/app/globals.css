@@ -123,3 +123,7 @@ body {
     @apply text-gray-700;
   }
 }
+
+.scrollbar-stable {
+  scrollbar-gutter: stable;
+}

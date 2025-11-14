@@ -14,7 +14,7 @@ export default function PhoneFrameLayout({
   className,
 }: Props) {
   return (
-    <div className="fixed inset-0 bg-gray-100 overflow-y-auto overflow-x-hidden">
+    <div className="fixed inset-0 bg-gray-100 overflow-y-auto overflow-x-hidden scrollbar-stable">
       <div className="min-h-screen flex justify-center px-6 py-0">
         <div className="w-full max-w-[600px] min-h-screen">
           <div
