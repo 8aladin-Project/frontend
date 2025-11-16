@@ -102,8 +102,8 @@ export default function Page() {
           </Tag>
         </div>
         <div className=" flex ml-[20px] mt-[20px]">
-          <h1 className="font-bold text-[30px] ">320,000원</h1>
-          <p className="text-lg mt-2 mb-0 ml-1 text-[#697281]">1일전</p>
+          <p className="font-bold text-[30px] mb-1">320,000원</p>
+          <p className="text-lg mt-2 ml-1 mb-2 text-[#697281]">1일전</p>
         </div>
         <div className="font-semi bold ml-[20px]">
           <p>
