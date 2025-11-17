@@ -27,7 +27,7 @@ export default function ClientLayout({
   };
 
   return (
-    <div>
+    <div className="min-h-[100svh] flex flex-col">
       {showHeader && (
         <Header
           title={title}
@@ -35,7 +35,7 @@ export default function ClientLayout({
           onBackClick={handleBackClick}
         />
       )}
-      {children}
+      <div className="flex-1">{children}</div>
       {showBottomNavigation && <BottomNavigationBar />}
     </div>
   );
