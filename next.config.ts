@@ -3,7 +3,16 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
-    domains: ["api-minio.8aladin.shop", "shopping-phinf.pstatic.net"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "api-minio.8aladin.shop",
+      },
+      {
+        protocol: "https",
+        hostname: "shopping-phinf.pstatic.net",
+      },
+    ],
   },
 };
 
