@@ -21,7 +21,6 @@ export default function ProductsPage() {
   const clickEffect = (index: number) => {
     setClickedIndex(index);
     setTimeout(() => setClickedIndex(null), 150);
-    console.log("click");
   };
 
   return (
@@ -40,7 +39,7 @@ export default function ProductsPage() {
               onClick={() => clickEffect(index)}
               className={`border-[3px] border-[#E5E7EB] rounded-2xl mx-1 my-3 ${clickedIndex === index ? "scale-95 ring-4 ring-black" : ""}`}
             >
-              <Image src={image} alt="상품 이미지" width={300} height={300} className="object-cover w-20 h-20 rounded-2xl" />
+              <Image src={image} alt={`상품 썸네일 ${index + 1}`} width={300} height={300} className="object-cover w-20 h-20 rounded-2xl" />
             </button>
           ))}
         </div>
@@ -98,12 +97,12 @@ export default function ProductsPage() {
             </button>
           </div>
           <div className="px-[10px]">
-            <button className="bg-[#F3F4F6] text-black font-bold px-[75] py-4 rounded">
+            <button className="bg-[#F3F4F6] text-black font-bold px-[75px] py-4 rounded">
               <WechatWorkOutlined className="text-[20px]" /> 채팅하기
             </button>
           </div>
           <div className="px-[10px]">
-            <button className="bg-[#232323] text-white font-bold px-[75] py-4 rounded">
+            <button className="bg-[#232323] text-white font-bold px-[75px] py-4 rounded">
               <ShoppingCartOutlined className="text-[20px]" /> 구매하기
             </button>
           </div>

@@ -48,7 +48,7 @@ const Header = () => {
           url: window.location.href,
         });
       } catch (err) {
-        console.log("공유 실패", err);
+        console.error("공유 실패", err);
       }
     } else {
       alert("이 브라우저는 공유 기능을 제공하지 않습니다.");
@@ -77,7 +77,7 @@ const Header = () => {
         </button>
 
         {/* 중앙 타이틀 */}
-        <h1 className={styles.title}>"상품 상세"</h1>
+        <h1 className={styles.title}>상품 상세</h1>
 
         {/* 오른쪽 아이콘들 */}
         <div className={styles.rightIcons}>
