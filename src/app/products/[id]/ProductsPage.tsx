@@ -39,7 +39,7 @@ export default function ProductsPage() {
               onClick={() => clickEffect(index)}
               className={`border-[3px] border-[#E5E7EB] rounded-2xl mx-1 my-3 ${clickedIndex === index ? "scale-95 ring-4 ring-black" : ""}`}
             >
-              <Image src={image} alt={`상품 썸네일 ${index + 1}`} width={300} height={300} className="object-cover w-20 h-20 rounded-2xl" />
+              <Image src={image} alt={`상품 썸네일 ${index + 1}`} width={80} height={80} className="object-cover w-20 h-20 rounded-2xl" />
             </button>
           ))}
         </div>
@@ -48,8 +48,8 @@ export default function ProductsPage() {
             <Image
               src="https://shopping-phinf.pstatic.net/main_3888828/38888282618.20230913071643.jpg"
               alt="프로필 이미지"
-              width={300}
-              height={300}
+              width={50}
+              height={50}
               className="object-cover w-full h-full rounded-full"
             />
           </div>
@@ -71,7 +71,7 @@ export default function ProductsPage() {
           <p className="font-bold text-[30px] mb-3">320,000원</p>
           <p className="text-lg mt-2 mb-0 ml-1 text-[#697281]">1일전</p>
         </div>
-        <div className="font-semi bold ml-[20px]">
+        <div className="ml-[20px]">
           <p>
             몇번 안해봤고 배터리 개선판입니다 <br />
             기스에 예민해서 직접 보호필름 붙이러 갔었고용 상태 S급이에요
