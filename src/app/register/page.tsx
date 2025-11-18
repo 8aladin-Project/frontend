@@ -21,11 +21,15 @@ import {
   LeftOutlined,
   // UploadOutlined,
   InboxOutlined,
-  EnvironmentOutlined,
 } from "@ant-design/icons";
 import type { UploadFile, UploadProps } from "antd";
 import styles from "./register.module.css";
 import { useRouter } from "next/navigation";
+import {
+  uploadImages,
+  createProduct,
+  type CreateProductRequest,
+} from "@/api/register";
 const { Title, Text } = Typography;
 const { Dragger } = Upload;
 
@@ -33,6 +37,7 @@ export default function Page() {
   const [form] = Form.useForm();
   const router = useRouter();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmit = async () => {
     try {
@@ -41,11 +46,123 @@ export default function Page() {
         return;
       }
       const values = await form.validateFields();
-      // 파일은 fileList에 있음
-      console.log({ ...values, photos: fileList });
-      message.success("등록 준비가 완료되었습니다.");
-    } catch {
-      // validate 실패
+
+      // 폼 값 디버깅
+      console.log("폼 값:", values);
+
+      setIsSubmitting(true);
+
+      // 파일 리스트에서 실제 File 객체 추출
+      const imageFiles = fileList
+        .map(file => file.originFileObj)
+        .filter((file): file is NonNullable<typeof file> => file !== undefined)
+        .map(file => file as File);
+
+      if (imageFiles.length === 0) {
+        message.error("업로드할 이미지 파일이 없습니다.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // 이미지 업로드
+      message.loading("이미지를 업로드하는 중...", 0);
+      let uploadedImages;
+      try {
+        uploadedImages = await uploadImages(imageFiles);
+        message.destroy();
+      } catch (error: any) {
+        message.destroy();
+        console.error("이미지 업로드 실패:", error);
+        console.error("에러 상세:", {
+          message: error?.message,
+          status: error?.response?.status,
+          statusText: error?.response?.statusText,
+          url: error?.config?.url,
+          baseURL: error?.config?.baseURL,
+          responseData: error?.response?.data,
+        });
+
+        // 서버에서 반환한 에러 메시지 파싱
+        const responseData = error?.response?.data;
+        let errorMessage = "이미지 업로드에 실패했습니다.";
+
+        if (error?.response?.status === 404) {
+          errorMessage =
+            "API 서버를 찾을 수 없습니다. 환경 변수를 확인해주세요.";
+        } else if (error?.response?.status === 500) {
+          // 서버 에러 응답에서 error_message 추출
+          if (responseData?.error_message) {
+            errorMessage = `서버 오류: ${responseData.error_message}`;
+          } else if (responseData?.error_code_name === "IMAGE_UPLOAD_FAILED") {
+            errorMessage =
+              "이미지 업로드에 실패했습니다. 잠시 후 다시 시도해주세요.";
+          } else {
+            errorMessage =
+              "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
+          }
+        } else if (responseData?.error_message) {
+          errorMessage = responseData.error_message;
+        } else if (error?.message) {
+          errorMessage = error.message;
+        }
+
+        message.error(errorMessage);
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (!uploadedImages || uploadedImages.length === 0) {
+        message.error("이미지 업로드에 실패했습니다.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // 첫 번째 이미지를 대표 이미지로, 나머지를 추가 이미지로 설정
+      const mainImageUrl = uploadedImages[0]?.imageUrl || "";
+      const additionalImages =
+        uploadedImages.length > 1
+          ? uploadedImages.slice(1).map(img => img.imageUrl)
+          : [];
+
+      // 카테고리 값 확인 및 처리
+      const categoryValue = values.category;
+      console.log("카테고리 값:", categoryValue);
+
+      // 상품 생성 데이터 준비
+      const productData: CreateProductRequest = {
+        memberId: 0, // TODO: 실제 사용자 ID로 변경 필요
+        title: values.title || "",
+        category: categoryValue ? [categoryValue] : [],
+        content: values.content || "",
+        mainImageUrl,
+        images: additionalImages,
+        price: Number(values.price) || 0,
+        status: values.status || "새상품",
+      };
+
+      // 전송할 데이터 콘솔 출력
+      console.log(
+        "상품 등록 요청 데이터:",
+        JSON.stringify(productData, null, 2)
+      );
+
+      // 상품 생성
+      message.loading("상품을 등록하는 중...", 0);
+      await createProduct(productData);
+      message.destroy();
+
+      message.success("상품이 성공적으로 등록되었습니다.");
+      router.back();
+    } catch (error: any) {
+      message.destroy();
+      console.error("상품 등록 실패:", error);
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "상품 등록에 실패했습니다. 다시 시도해주세요.";
+      message.error(errorMessage);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -90,7 +207,9 @@ export default function Page() {
           <Title level={5} className="!m-0">
             상품 등록
           </Title>
-          <Button onClick={onSubmit}>등록</Button>
+          <Button onClick={onSubmit} loading={isSubmitting}>
+            등록
+          </Button>
         </div>
       </Affix>
 
@@ -139,7 +258,11 @@ export default function Page() {
               기본 정보
             </Title>
 
-            <Form.Item label="상품명" name="title">
+            <Form.Item
+              label="상품명"
+              name="title"
+              rules={[{ required: true, message: "상품명을 입력해주세요." }]}
+            >
               {/* Input에 모듈 클래스 적용 */}
               <div className={styles.customInput}>
                 <Input placeholder="상품명을 입력해주세요" />
@@ -148,21 +271,24 @@ export default function Page() {
 
             <Row gutter={12}>
               <Col span={24} md={12}>
-                <Form.Item label="카테고리" name="category">
-                  {/* Select에 모듈 클래스 적용 */}
-                  <div className={styles.customSelect}>
-                    <Select
-                      placeholder="카테고리를 선택해주세요"
-                      options={[
-                        { label: "디지털/가전", value: "digital" },
-                        { label: "가구/인테리어", value: "furniture" },
-                        { label: "패션/잡화", value: "fashion" },
-                        { label: "도서/티켓", value: "book" },
-                        { label: "기타", value: "etc" },
-                      ]}
-                      className="w-full"
-                    />
-                  </div>
+                <Form.Item
+                  label="카테고리"
+                  name="category"
+                  rules={[
+                    { required: true, message: "카테고리를 선택해주세요." },
+                  ]}
+                >
+                  <Select
+                    placeholder="카테고리를 선택해주세요"
+                    options={[
+                      { label: "디지털/가전", value: "디지털/가전" },
+                      { label: "가구/인테리어", value: "가구/인테리어" },
+                      { label: "패션/잡화", value: "패션/잡화" },
+                      { label: "도서/티켓", value: "도서/티켓" },
+                      { label: "기타", value: "기타" },
+                    ]}
+                    className="w-full"
+                  />
                 </Form.Item>
               </Col>
 
@@ -188,16 +314,16 @@ export default function Page() {
 
             <Form.Item
               label="상품 상태"
-              name="condition"
-              initialValue="new"
+              name="status"
+              initialValue="새상품"
               rules={[{ required: true, message: "상품 상태를 선택해주세요." }]}
             >
               <Segmented
                 block
                 options={[
-                  { label: "새상품", value: "new" },
-                  { label: "거의 새것", value: "like-new" },
-                  { label: "중고", value: "used" },
+                  { label: "새상품", value: "새상품" },
+                  { label: "거의 새것", value: "거의 새것" },
+                  { label: "중고", value: "중고" },
                 ]}
               />
             </Form.Item>
@@ -217,7 +343,7 @@ export default function Page() {
                   상세 설명 <Text type="danger">*</Text>
                 </>
               }
-              name="description"
+              name="content"
               rules={[{ required: true, message: "상세 설명을 입력해주세요." }]}
             >
               <Input.TextArea
@@ -240,43 +366,6 @@ export default function Page() {
                 </li>
               </ul>
             </div>
-          </section>
-
-          <Divider className="!my-5" />
-
-          {/* 거래 설정 */}
-          <section>
-            <Title level={5} className="!mb-3">
-              거래 설정
-            </Title>
-
-            <Form.Item
-              label="거래 방법"
-              name="dealType"
-              initialValue="both"
-              rules={[{ required: true, message: "거래 방법을 선택해주세요." }]}
-            >
-              <Segmented
-                block
-                options={[
-                  { label: "직거래", value: "direct" },
-                  { label: "택배", value: "delivery" },
-                  { label: "둘 다", value: "both" },
-                ]}
-              />
-            </Form.Item>
-
-            <Form.Item label="거래 위치" name="location">
-              <Input
-                prefix={<EnvironmentOutlined />}
-                placeholder="동네를 검색해보세요"
-                className="rounded-xl"
-              />
-            </Form.Item>
-
-            <Text type="secondary" className="block text-[12px]">
-              정확한 동네를 입력하면 근처 관심 고객에게 상품이 노출돼요.
-            </Text>
           </section>
         </Form>
       </div>
