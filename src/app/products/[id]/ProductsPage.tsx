@@ -55,8 +55,8 @@ export default function ProductsPage() {
             />
           </div>
           <div className="ml-[10px]">
-            <h1 className="font-semibold">게임러버김씨</h1>
-            <h1 className="text-[#697281]">신뢰도 높은 판매자</h1>
+            <p className="font-semibold mb-2 mt-2">게임러버김씨</p>
+            <p className="text-[#697281]">신뢰도 높은 판매자</p>
           </div>
           <div className="ml-auto font-medium text-[#344153] bg-[#F3F4F6] p-1 rounded mr-6">
             <button>프로필 보기</button>
@@ -69,7 +69,7 @@ export default function ProductsPage() {
           </Tag>
         </div>
         <div className=" flex ml-[20px] mt-[20px]">
-          <h1 className="font-bold text-[30px] ">320,000원</h1>
+          <p className="font-bold text-[30px] mb-3">320,000원</p>
           <p className="text-lg mt-2 mb-0 ml-1 text-[#697281]">1일전</p>
         </div>
         <div className="font-semi bold ml-[20px]">
