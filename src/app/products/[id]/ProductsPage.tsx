@@ -7,6 +7,8 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import { Tag } from "antd";
+import Image from "next/image";
+
 
 export default function ProductsPage() {
   const [clickedIndex, setClickedIndex] = useState<number | null>(null);
@@ -29,7 +31,7 @@ export default function ProductsPage() {
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         <div className="w-[600px] h-[600px] border">
-          <img src={images[0]} className="object-cover w-full h-full" />
+          <Image src={images[0]} alt="상품 대표 이미지" width={600} height={600} className="object-cover w-full h-full" />
         </div>
         <div>
           {images.map((image, index) => (
@@ -38,14 +40,17 @@ export default function ProductsPage() {
               onClick={() => clickEffect(index)}
               className={`border-[3px] border-[#E5E7EB] rounded-2xl mx-1 my-3 ${clickedIndex === index ? "scale-95 ring-4 ring-black" : ""}`}
             >
-              <img src={image} className="object-cover w-20 h-20 rounded-2xl" />
+              <Image src={image} alt="상품 이미지" width={300} height={300} className="object-cover w-20 h-20 rounded-2xl" />
             </button>
           ))}
         </div>
         <div className="w-[600px] h-[80px] flex items-center justify-center mx-auto">
           <div className="w-[50px] h-[50px] ml-[10px] mr-[10px]">
-            <img
+            <Image
               src="https://shopping-phinf.pstatic.net/main_3888828/38888282618.20230913071643.jpg"
+              alt="프로필 이미지"
+              width={300}
+              height={300}
               className="object-cover w-full h-full rounded-full"
             />
           </div>
