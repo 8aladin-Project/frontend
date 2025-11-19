@@ -13,6 +13,7 @@ export default function SignupPage() {
     passwordConfirm: "",
     nickname: "",
     phone: "",
+    name: "",
   });
   const [errors, setErrors] = useState({
     email: "",
@@ -20,6 +21,7 @@ export default function SignupPage() {
     passwordConfirm: "",
     nickname: "",
     phone: "",
+    name: "",
   });
   const [agreements, setAgreements] = useState({
     termsOfService: false,
@@ -38,8 +40,8 @@ export default function SignupPage() {
   };
 
   const handleChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    setErrors((prev) => ({ ...prev, [field]: "" }));
+    setFormData(prev => ({ ...prev, [field]: value }));
+    setErrors(prev => ({ ...prev, [field]: "" }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -51,6 +53,7 @@ export default function SignupPage() {
       passwordConfirm: "",
       nickname: "",
       phone: "",
+      name: "",
     };
 
     if (!formData.email) {
@@ -70,7 +73,11 @@ export default function SignupPage() {
     } else if (formData.password !== formData.passwordConfirm) {
       newErrors.passwordConfirm = "비밀번호가 일치하지 않습니다.";
     }
-
+    if (!formData.name) {
+      newErrors.name = "이름을 입력해주세요.";
+    } else if (formData.name.length < 2) {
+      newErrors.name = "이름은 2자 이상이어야 합니다.";
+    }
     if (!formData.nickname) {
       newErrors.nickname = "닉네임을 입력해주세요.";
     } else if (formData.nickname.length < 2) {
@@ -90,7 +97,7 @@ export default function SignupPage() {
       return;
     }
 
-    if (Object.values(newErrors).every((error) => !error)) {
+    if (Object.values(newErrors).every(error => !error)) {
       console.log("회원가입 시도:", { ...formData, agreements });
       message.success("회원가입이 완료되었습니다!");
       // TODO: 실제 회원가입 API 호출
@@ -141,7 +148,7 @@ export default function SignupPage() {
               type="email"
               id="email"
               value={formData.email}
-              onChange={(e) => handleChange("email", e.target.value)}
+              onChange={e => handleChange("email", e.target.value)}
               placeholder="example@email.com"
               className={`w-full h-14 px-4 bg-gray-800/50 border ${
                 errors.email ? "border-red-500" : "border-gray-700"
@@ -164,7 +171,7 @@ export default function SignupPage() {
               type="password"
               id="password"
               value={formData.password}
-              onChange={(e) => handleChange("password", e.target.value)}
+              onChange={e => handleChange("password", e.target.value)}
               placeholder="8자 이상 입력해주세요"
               className={`w-full h-14 px-4 bg-gray-800/50 border ${
                 errors.password ? "border-red-500" : "border-gray-700"
@@ -187,7 +194,7 @@ export default function SignupPage() {
               type="password"
               id="passwordConfirm"
               value={formData.passwordConfirm}
-              onChange={(e) => handleChange("passwordConfirm", e.target.value)}
+              onChange={e => handleChange("passwordConfirm", e.target.value)}
               placeholder="비밀번호를 다시 입력해주세요"
               className={`w-full h-14 px-4 bg-gray-800/50 border ${
                 errors.passwordConfirm ? "border-red-500" : "border-gray-700"
@@ -199,7 +206,28 @@ export default function SignupPage() {
               </p>
             )}
           </div>
-
+          {/* 이름 */}
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-300 mb-2"
+            >
+              이름 <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              id="name"
+              value={formData.name}
+              onChange={e => handleChange("name", e.target.value)}
+              placeholder="이름을 입력해주세요"
+              className={`w-full h-14 px-4 bg-gray-800/50 border ${
+                errors.name ? "border-red-500" : "border-gray-700"
+              } rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
+            />
+            {errors.name && (
+              <p className="mt-2 text-sm text-red-400">{errors.name}</p>
+            )}
+          </div>
           {/* 닉네임 */}
           <div>
             <label
@@ -212,7 +240,7 @@ export default function SignupPage() {
               type="text"
               id="nickname"
               value={formData.nickname}
-              onChange={(e) => handleChange("nickname", e.target.value)}
+              onChange={e => handleChange("nickname", e.target.value)}
               placeholder="2자 이상 입력해주세요"
               className={`w-full h-14 px-4 bg-gray-800/50 border ${
                 errors.nickname ? "border-red-500" : "border-gray-700"
@@ -220,6 +248,29 @@ export default function SignupPage() {
             />
             {errors.nickname && (
               <p className="mt-2 text-sm text-red-400">{errors.nickname}</p>
+            )}
+          </div>
+
+          {/* 이름 */}
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-300 mb-2"
+            >
+              이름 <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              id="name"
+              value={formData.name}
+              onChange={e => handleChange("name", e.target.value)}
+              placeholder="이름을 입력해주세요"
+              className={`w-full h-14 px-4 bg-gray-800/50 border ${
+                errors.name ? "border-red-500" : "border-gray-700"
+              } rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
+            />
+            {errors.name && (
+              <p className="mt-2 text-sm text-red-400">{errors.name}</p>
             )}
           </div>
 
@@ -235,7 +286,7 @@ export default function SignupPage() {
               type="tel"
               id="phone"
               value={formData.phone}
-              onChange={(e) => handleChange("phone", e.target.value)}
+              onChange={e => handleChange("phone", e.target.value)}
               placeholder="010-1234-5678"
               className={`w-full h-14 px-4 bg-gray-800/50 border ${
                 errors.phone ? "border-red-500" : "border-gray-700"
@@ -251,7 +302,7 @@ export default function SignupPage() {
             <div className="pb-3 border-b border-gray-700">
               <Checkbox
                 checked={allAgreed}
-                onChange={(e) => handleAllAgree(e.target.checked)}
+                onChange={e => handleAllAgree(e.target.checked)}
                 className="text-white [&_.ant-checkbox]:!bg-gray-800/50 [&_.ant-checkbox]:!border-gray-600"
               >
                 <span className="text-gray-300 font-semibold">
@@ -263,8 +314,8 @@ export default function SignupPage() {
             <div className="space-y-3">
               <Checkbox
                 checked={agreements.termsOfService}
-                onChange={(e) =>
-                  setAgreements((prev) => ({
+                onChange={e =>
+                  setAgreements(prev => ({
                     ...prev,
                     termsOfService: e.target.checked,
                   }))
@@ -278,8 +329,8 @@ export default function SignupPage() {
 
               <Checkbox
                 checked={agreements.privacyPolicy}
-                onChange={(e) =>
-                  setAgreements((prev) => ({
+                onChange={e =>
+                  setAgreements(prev => ({
                     ...prev,
                     privacyPolicy: e.target.checked,
                   }))
@@ -294,8 +345,8 @@ export default function SignupPage() {
 
               <Checkbox
                 checked={agreements.marketing}
-                onChange={(e) =>
-                  setAgreements((prev) => ({
+                onChange={e =>
+                  setAgreements(prev => ({
                     ...prev,
                     marketing: e.target.checked,
                   }))
@@ -335,4 +386,3 @@ export default function SignupPage() {
     </div>
   );
 }
-
