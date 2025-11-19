@@ -6,7 +6,7 @@ export default function NotificationLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClientLayout title="알림" showHeader={true} showBackButton={true}>
+    <ClientLayout title="알림" showHeader={true} showBackButton={true} showBottomNavigation={true}>
       {children}
     </ClientLayout>
   );
