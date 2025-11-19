@@ -1,6 +1,7 @@
 "use client";
 
 import { List, Tag } from "antd";
+import Image from "next/image";
 import type { Notification } from "@/data/notificationpage/notification";
 
 type NotificationRowProps = {
@@ -19,7 +20,7 @@ export default function NotificationRow({
     >
       <div className="flex">
         <div className="mr-2">
-          <img src={item.img_url} className="h-[120px]" />
+          <Image src={item.img_url} alt={"상품 이미지"} width={100} height={100} />
         </div>
         <div>
           <h3 className="font-semibold mb-4">{item.type}</h3>
