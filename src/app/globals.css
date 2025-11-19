@@ -5,6 +5,7 @@
 html,
 body {
   overflow-x: hidden;
+  min-height: 100svh;
 }
 
 body {
@@ -122,4 +123,8 @@ body {
   .bottom-inactive {
     @apply text-gray-700;
   }
+}
+
+.scrollbar-stable {
+  scrollbar-gutter: stable;
 }
