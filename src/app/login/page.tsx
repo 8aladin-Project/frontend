@@ -3,12 +3,35 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 
+// 백엔드 API URL (환경 변수에서 가져오거나 프로덕션 기본값 사용)
+const BACKEND_API_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.8aladin.shop";
+
 export default function LoginPage() {
   const router = useRouter();
 
   const handleKakaoLogin = () => {
-    console.log("카카오 로그인 시작");
-    // TODO: 카카오 OAuth 연동
+    try {
+      if (typeof window === "undefined") {
+        throw new Error(
+          "브라우저 환경에서만 카카오 로그인을 사용할 수 있습니다."
+        );
+      }
+
+      // 리다이렉트할 프론트엔드 URL (성공 후 돌아올 페이지)
+      const redirectUrl = encodeURIComponent(
+        `${window.location.origin}/mainpage`
+      );
+
+      // 백엔드의 OAuth2 인증 엔드포인트로 리다이렉트
+      // next 파라미터로 성공 후 리다이렉트할 URL 전달
+      const oauth2Url = `${BACKEND_API_URL}/oauth2/authorization/kakao?next=${redirectUrl}`;
+
+      window.location.href = oauth2Url;
+    } catch (error) {
+      console.error(error);
+      alert("카카오 로그인 설정이 올바르지 않습니다. 관리자에게 문의해주세요.");
+    }
   };
 
   const handleGoogleLogin = () => {
@@ -27,24 +50,16 @@ export default function LoginPage() {
               <span className="text-white text-4xl font-bold">8</span>
             </div>
           </div>
-          
+
           {/* 타이틀 */}
-          <h1 className="text-4xl font-bold text-white mb-3">
-            8aladin
-          </h1>
-          <p className="text-gray-400 text-lg">
-            안전하고 편리한 중고거래
-          </p>
+          <h1 className="text-4xl font-bold text-white mb-3">8aladin</h1>
+          <p className="text-gray-400 text-lg">안전하고 편리한 중고거래</p>
         </div>
 
         {/* 설명 텍스트 */}
         <div className="text-center space-y-2 mb-8">
-          <p className="text-gray-300 text-sm">
-            간편하게 로그인하고
-          </p>
-          <p className="text-gray-300 text-sm">
-            다양한 중고 상품을 만나보세요
-          </p>
+          <p className="text-gray-300 text-sm">간편하게 로그인하고</p>
+          <p className="text-gray-300 text-sm">다양한 중고 상품을 만나보세요</p>
         </div>
       </div>
 
@@ -153,4 +168,3 @@ export default function LoginPage() {
     </div>
   );
 }
-

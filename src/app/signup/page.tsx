@@ -251,29 +251,6 @@ export default function SignupPage() {
             )}
           </div>
 
-          {/* 이름 */}
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-300 mb-2"
-            >
-              이름 <span className="text-red-400">*</span>
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={formData.name}
-              onChange={e => handleChange("name", e.target.value)}
-              placeholder="이름을 입력해주세요"
-              className={`w-full h-14 px-4 bg-gray-800/50 border ${
-                errors.name ? "border-red-500" : "border-gray-700"
-              } rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
-            />
-            {errors.name && (
-              <p className="mt-2 text-sm text-red-400">{errors.name}</p>
-            )}
-          </div>
-
           {/* 휴대폰 번호 */}
           <div>
             <label
