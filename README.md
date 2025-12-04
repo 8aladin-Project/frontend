@@ -4,7 +4,7 @@
 
 ## 🚀 기술 스택
 
-- **Framework**: Next.js 15.5.2 (App Router)
+- **Framework**: Next.js 15.5.7 (App Router)
 - **Language**: TypeScript 5
 - **Styling**: Tailwind CSS 3.4.4
 - **UI Development**: Storybook 9.1.5
