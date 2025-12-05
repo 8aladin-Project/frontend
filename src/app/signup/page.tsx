@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button, Checkbox, message } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
+import { signup } from "@/api/signup";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -11,7 +12,6 @@ export default function SignupPage() {
     email: "",
     password: "",
     passwordConfirm: "",
-    nickname: "",
     phone: "",
     name: "",
   });
@@ -19,7 +19,6 @@ export default function SignupPage() {
     email: "",
     password: "",
     passwordConfirm: "",
-    nickname: "",
     phone: "",
     name: "",
   });
@@ -28,6 +27,7 @@ export default function SignupPage() {
     privacyPolicy: false,
     marketing: false,
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateEmail = (email: string) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -45,13 +45,13 @@ export default function SignupPage() {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
+    console.log("회원가입 시도:", { ...formData, agreements });
     e.preventDefault();
 
     const newErrors = {
       email: "",
       password: "",
       passwordConfirm: "",
-      nickname: "",
       phone: "",
       name: "",
     };
@@ -78,11 +78,6 @@ export default function SignupPage() {
     } else if (formData.name.length < 2) {
       newErrors.name = "이름은 2자 이상이어야 합니다.";
     }
-    if (!formData.nickname) {
-      newErrors.nickname = "닉네임을 입력해주세요.";
-    } else if (formData.nickname.length < 2) {
-      newErrors.nickname = "닉네임은 2자 이상이어야 합니다.";
-    }
 
     if (!formData.phone) {
       newErrors.phone = "휴대폰 번호를 입력해주세요.";
@@ -98,10 +93,31 @@ export default function SignupPage() {
     }
 
     if (Object.values(newErrors).every(error => !error)) {
-      console.log("회원가입 시도:", { ...formData, agreements });
+      handleSignup();
+    }
+  };
+
+  const handleSignup = async () => {
+    setIsLoading(true);
+    try {
+      console.log("회원가입 시도(handleSignup):", { ...formData, agreements });
+      await signup({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        mobileNumber: formData.phone,
+      });
       message.success("회원가입이 완료되었습니다!");
-      // TODO: 실제 회원가입 API 호출
-      router.push("/login");
+      router.push("/login/email");
+    } catch (error: any) {
+      console.error("회원가입 실패:", error);
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "회원가입에 실패했습니다. 다시 시도해주세요.";
+      message.error(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -318,9 +334,14 @@ export default function SignupPage() {
           {/* 회원가입 버튼 */}
           <button
             type="submit"
-            className="w-full h-14 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] mt-8"
+            disabled={isLoading}
+            className={`w-full h-14 ${
+              isLoading
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
+            } text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] mt-8`}
           >
-            회원가입
+            {isLoading ? "처리 중..." : "회원가입"}
           </button>
 
           {/* 로그인 링크 */}
