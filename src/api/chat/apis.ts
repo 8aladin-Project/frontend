@@ -1,3 +1,38 @@
+import axiosInstance from "../axiosInstance";
+
+// 채팅방 생성 요청 타입
+export interface CreateChatRoomRequest {
+  sellerId: number;
+  buyerId: number;
+  productId: number;
+}
+
+// 채팅방 생성 응답 타입
+export interface ChatRoomResponse {
+  chatRoomId: number;
+  sellerId: number;
+  sellerName: string;
+  buyerId: number;
+  buyerName: string;
+  productId: number;
+  productTitle: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
+ * 채팅방 생성 API
+ */
+export async function createChatRoom(
+  request: CreateChatRoomRequest
+): Promise<ChatRoomResponse> {
+  const response = await axiosInstance.post<ChatRoomResponse>(
+    "/api/v1/chatrooms",
+    request
+  );
+  return response.data;
+}
+
 // 더미 데이터
 export async function getChatRoomDetails(roomId: string) {
   return {

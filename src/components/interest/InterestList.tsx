@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { List } from "antd";
 import type { InterestItem } from "@/data/interest/interestItems";
 import InterestItemRow from "@/components/interest/InterestItemRow";
 
@@ -25,18 +24,16 @@ export default function InterestList({
         <span className="text-base font-semibold pr-2">{items.length}개</span>
       </div>
 
-      <List
-        itemLayout="horizontal"
-        dataSource={items}
-        split={false}
-        renderItem={item => (
+      <div className="flex flex-col gap-3">
+        {items.map(item => (
           <InterestItemRow
+            key={item.id ?? item.title}
             item={item}
-            // onClick={onItemClick}
+            onItemClick={onItemClick}
             onRemoveInterest={onRemoveInterest}
           />
-        )}
-      />
+        ))}
+      </div>
     </div>
   );
 }

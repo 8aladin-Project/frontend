@@ -50,7 +50,7 @@ export default function ProfileSection({
 
           {/* 중앙 이름, 인증, 위치 */}
           <Col flex="auto">
-            <Space direction="vertical" size={4} className="pl-2">
+            <Space orientation="vertical" size={4} className="pl-2">
               <Space size="small" align="center">
                 <Title level={4} className="!m-0 !font-bold">
                   {name}

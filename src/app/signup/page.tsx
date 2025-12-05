@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button, Checkbox, message } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
+import { signup } from "@/api/signup";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -11,21 +12,22 @@ export default function SignupPage() {
     email: "",
     password: "",
     passwordConfirm: "",
-    nickname: "",
     phone: "",
+    name: "",
   });
   const [errors, setErrors] = useState({
     email: "",
     password: "",
     passwordConfirm: "",
-    nickname: "",
     phone: "",
+    name: "",
   });
   const [agreements, setAgreements] = useState({
     termsOfService: false,
     privacyPolicy: false,
     marketing: false,
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateEmail = (email: string) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -37,20 +39,38 @@ export default function SignupPage() {
     return regex.test(phone);
   };
 
+  const validatePassword = (password: string) => {
+    // 최소 8자 이상
+    if (password.length < 8) {
+      return false;
+    }
+    // 영문 포함
+    const hasLetter = /[a-zA-Z]/.test(password);
+    // 숫자 포함
+    const hasNumber = /[0-9]/.test(password);
+    // 특수문자 포함
+    const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(
+      password
+    );
+
+    return hasLetter && hasNumber && hasSpecialChar;
+  };
+
   const handleChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    setErrors((prev) => ({ ...prev, [field]: "" }));
+    setFormData(prev => ({ ...prev, [field]: value }));
+    setErrors(prev => ({ ...prev, [field]: "" }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
+    console.log("회원가입 시도:", { ...formData, agreements });
     e.preventDefault();
 
     const newErrors = {
       email: "",
       password: "",
       passwordConfirm: "",
-      nickname: "",
       phone: "",
+      name: "",
     };
 
     if (!formData.email) {
@@ -61,8 +81,9 @@ export default function SignupPage() {
 
     if (!formData.password) {
       newErrors.password = "비밀번호를 입력해주세요.";
-    } else if (formData.password.length < 8) {
-      newErrors.password = "비밀번호는 8자 이상이어야 합니다.";
+    } else if (!validatePassword(formData.password)) {
+      newErrors.password =
+        "비밀번호는 최소 8자 이상이며, 영문, 숫자, 특수문자를 포함해야 합니다.";
     }
 
     if (!formData.passwordConfirm) {
@@ -70,11 +91,10 @@ export default function SignupPage() {
     } else if (formData.password !== formData.passwordConfirm) {
       newErrors.passwordConfirm = "비밀번호가 일치하지 않습니다.";
     }
-
-    if (!formData.nickname) {
-      newErrors.nickname = "닉네임을 입력해주세요.";
-    } else if (formData.nickname.length < 2) {
-      newErrors.nickname = "닉네임은 2자 이상이어야 합니다.";
+    if (!formData.name) {
+      newErrors.name = "이름을 입력해주세요.";
+    } else if (formData.name.length < 2) {
+      newErrors.name = "이름은 2자 이상이어야 합니다.";
     }
 
     if (!formData.phone) {
@@ -90,11 +110,32 @@ export default function SignupPage() {
       return;
     }
 
-    if (Object.values(newErrors).every((error) => !error)) {
-      console.log("회원가입 시도:", { ...formData, agreements });
+    if (Object.values(newErrors).every(error => !error)) {
+      handleSignup();
+    }
+  };
+
+  const handleSignup = async () => {
+    setIsLoading(true);
+    try {
+      console.log("회원가입 시도(handleSignup):", { ...formData, agreements });
+      await signup({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        mobileNumber: formData.phone,
+      });
       message.success("회원가입이 완료되었습니다!");
-      // TODO: 실제 회원가입 API 호출
-      router.push("/login");
+      router.push("/login/email");
+    } catch (error: any) {
+      console.error("회원가입 실패:", error);
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "회원가입에 실패했습니다. 다시 시도해주세요.";
+      message.error(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -141,7 +182,7 @@ export default function SignupPage() {
               type="email"
               id="email"
               value={formData.email}
-              onChange={(e) => handleChange("email", e.target.value)}
+              onChange={e => handleChange("email", e.target.value)}
               placeholder="example@email.com"
               className={`w-full h-14 px-4 bg-gray-800/50 border ${
                 errors.email ? "border-red-500" : "border-gray-700"
@@ -160,16 +201,59 @@ export default function SignupPage() {
             >
               비밀번호 <span className="text-red-400">*</span>
             </label>
-            <input
-              type="password"
-              id="password"
-              value={formData.password}
-              onChange={(e) => handleChange("password", e.target.value)}
-              placeholder="8자 이상 입력해주세요"
-              className={`w-full h-14 px-4 bg-gray-800/50 border ${
-                errors.password ? "border-red-500" : "border-gray-700"
-              } rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
-            />
+            {(() => {
+              const hasPassword = formData.password.length > 0;
+              const isValidPassword =
+                hasPassword && validatePassword(formData.password);
+              const getBorderColor = () => {
+                if (errors.password) return "#ef4444";
+                if (isValidPassword) return "#3b82f6";
+                if (hasPassword) return "#ef4444";
+                return "#374151";
+              };
+
+              return (
+                <input
+                  type="password"
+                  id="password"
+                  value={formData.password}
+                  onChange={e => handleChange("password", e.target.value)}
+                  placeholder="8자 이상 입력해주세요"
+                  style={{
+                    width: "100%",
+                    height: "3.5rem",
+                    padding: "0 1rem",
+                    backgroundColor: "rgba(31, 41, 55, 0.5)",
+                    borderWidth: "1px",
+                    borderStyle: "solid",
+                    borderColor: getBorderColor(),
+                    borderRadius: "0.75rem",
+                    color: "#ffffff",
+                    outline: "none",
+                    transition: "all 0.2s",
+                  }}
+                  className="!w-full !h-14 !px-4 !bg-gray-800/50 !border !rounded-xl !text-white placeholder-gray-500 !focus:outline-none focus:ring-2 focus:ring-blue-500 !focus:border-transparent !transition-all"
+                  onFocus={e => {
+                    const borderColor = isValidPassword
+                      ? "#3b82f6"
+                      : hasPassword
+                        ? "#ef4444"
+                        : "#3b82f6";
+                    e.target.style.borderColor = borderColor;
+                    e.target.style.boxShadow =
+                      "0 0 0 2px rgba(59, 130, 246, 0.5)";
+                  }}
+                  onBlur={e => {
+                    e.target.style.boxShadow = "none";
+                    e.target.style.borderColor = getBorderColor();
+                  }}
+                />
+              );
+            })()}
+            <p className="mt-2 text-sm text-gray-400">
+              비밀번호는 최소 8자 이상이며, 영문, 숫자, 특수문자를 포함해야
+              합니다
+            </p>
             {errors.password && (
               <p className="mt-2 text-sm text-red-400">{errors.password}</p>
             )}
@@ -187,7 +271,7 @@ export default function SignupPage() {
               type="password"
               id="passwordConfirm"
               value={formData.passwordConfirm}
-              onChange={(e) => handleChange("passwordConfirm", e.target.value)}
+              onChange={e => handleChange("passwordConfirm", e.target.value)}
               placeholder="비밀번호를 다시 입력해주세요"
               className={`w-full h-14 px-4 bg-gray-800/50 border ${
                 errors.passwordConfirm ? "border-red-500" : "border-gray-700"
@@ -199,27 +283,26 @@ export default function SignupPage() {
               </p>
             )}
           </div>
-
-          {/* 닉네임 */}
+          {/* 이름 */}
           <div>
             <label
-              htmlFor="nickname"
+              htmlFor="name"
               className="block text-sm font-medium text-gray-300 mb-2"
             >
-              닉네임 <span className="text-red-400">*</span>
+              이름 <span className="text-red-400">*</span>
             </label>
             <input
               type="text"
-              id="nickname"
-              value={formData.nickname}
-              onChange={(e) => handleChange("nickname", e.target.value)}
-              placeholder="2자 이상 입력해주세요"
+              id="name"
+              value={formData.name}
+              onChange={e => handleChange("name", e.target.value)}
+              placeholder="이름을 입력해주세요"
               className={`w-full h-14 px-4 bg-gray-800/50 border ${
-                errors.nickname ? "border-red-500" : "border-gray-700"
+                errors.name ? "border-red-500" : "border-gray-700"
               } rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
             />
-            {errors.nickname && (
-              <p className="mt-2 text-sm text-red-400">{errors.nickname}</p>
+            {errors.name && (
+              <p className="mt-2 text-sm text-red-400">{errors.name}</p>
             )}
           </div>
 
@@ -235,7 +318,7 @@ export default function SignupPage() {
               type="tel"
               id="phone"
               value={formData.phone}
-              onChange={(e) => handleChange("phone", e.target.value)}
+              onChange={e => handleChange("phone", e.target.value)}
               placeholder="010-1234-5678"
               className={`w-full h-14 px-4 bg-gray-800/50 border ${
                 errors.phone ? "border-red-500" : "border-gray-700"
@@ -251,7 +334,7 @@ export default function SignupPage() {
             <div className="pb-3 border-b border-gray-700">
               <Checkbox
                 checked={allAgreed}
-                onChange={(e) => handleAllAgree(e.target.checked)}
+                onChange={e => handleAllAgree(e.target.checked)}
                 className="text-white [&_.ant-checkbox]:!bg-gray-800/50 [&_.ant-checkbox]:!border-gray-600"
               >
                 <span className="text-gray-300 font-semibold">
@@ -263,8 +346,8 @@ export default function SignupPage() {
             <div className="space-y-3">
               <Checkbox
                 checked={agreements.termsOfService}
-                onChange={(e) =>
-                  setAgreements((prev) => ({
+                onChange={e =>
+                  setAgreements(prev => ({
                     ...prev,
                     termsOfService: e.target.checked,
                   }))
@@ -278,8 +361,8 @@ export default function SignupPage() {
 
               <Checkbox
                 checked={agreements.privacyPolicy}
-                onChange={(e) =>
-                  setAgreements((prev) => ({
+                onChange={e =>
+                  setAgreements(prev => ({
                     ...prev,
                     privacyPolicy: e.target.checked,
                   }))
@@ -294,8 +377,8 @@ export default function SignupPage() {
 
               <Checkbox
                 checked={agreements.marketing}
-                onChange={(e) =>
-                  setAgreements((prev) => ({
+                onChange={e =>
+                  setAgreements(prev => ({
                     ...prev,
                     marketing: e.target.checked,
                   }))
@@ -312,9 +395,14 @@ export default function SignupPage() {
           {/* 회원가입 버튼 */}
           <button
             type="submit"
-            className="w-full h-14 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] mt-8"
+            disabled={isLoading}
+            className={`w-full h-14 ${
+              isLoading
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
+            } text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] mt-8`}
           >
-            회원가입
+            {isLoading ? "처리 중..." : "회원가입"}
           </button>
 
           {/* 로그인 링크 */}
@@ -335,4 +423,3 @@ export default function SignupPage() {
     </div>
   );
 }
-
