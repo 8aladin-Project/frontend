@@ -39,6 +39,23 @@ export default function SignupPage() {
     return regex.test(phone);
   };
 
+  const validatePassword = (password: string) => {
+    // 최소 8자 이상
+    if (password.length < 8) {
+      return false;
+    }
+    // 영문 포함
+    const hasLetter = /[a-zA-Z]/.test(password);
+    // 숫자 포함
+    const hasNumber = /[0-9]/.test(password);
+    // 특수문자 포함
+    const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(
+      password
+    );
+
+    return hasLetter && hasNumber && hasSpecialChar;
+  };
+
   const handleChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     setErrors(prev => ({ ...prev, [field]: "" }));
@@ -64,8 +81,9 @@ export default function SignupPage() {
 
     if (!formData.password) {
       newErrors.password = "비밀번호를 입력해주세요.";
-    } else if (formData.password.length < 8) {
-      newErrors.password = "비밀번호는 8자 이상이어야 합니다.";
+    } else if (!validatePassword(formData.password)) {
+      newErrors.password =
+        "비밀번호는 최소 8자 이상이며, 영문, 숫자, 특수문자를 포함해야 합니다.";
     }
 
     if (!formData.passwordConfirm) {
@@ -183,16 +201,59 @@ export default function SignupPage() {
             >
               비밀번호 <span className="text-red-400">*</span>
             </label>
-            <input
-              type="password"
-              id="password"
-              value={formData.password}
-              onChange={e => handleChange("password", e.target.value)}
-              placeholder="8자 이상 입력해주세요"
-              className={`w-full h-14 px-4 bg-gray-800/50 border ${
-                errors.password ? "border-red-500" : "border-gray-700"
-              } rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
-            />
+            {(() => {
+              const hasPassword = formData.password.length > 0;
+              const isValidPassword =
+                hasPassword && validatePassword(formData.password);
+              const getBorderColor = () => {
+                if (errors.password) return "#ef4444";
+                if (isValidPassword) return "#3b82f6";
+                if (hasPassword) return "#ef4444";
+                return "#374151";
+              };
+
+              return (
+                <input
+                  type="password"
+                  id="password"
+                  value={formData.password}
+                  onChange={e => handleChange("password", e.target.value)}
+                  placeholder="8자 이상 입력해주세요"
+                  style={{
+                    width: "100%",
+                    height: "3.5rem",
+                    padding: "0 1rem",
+                    backgroundColor: "rgba(31, 41, 55, 0.5)",
+                    borderWidth: "1px",
+                    borderStyle: "solid",
+                    borderColor: getBorderColor(),
+                    borderRadius: "0.75rem",
+                    color: "#ffffff",
+                    outline: "none",
+                    transition: "all 0.2s",
+                  }}
+                  className="!w-full !h-14 !px-4 !bg-gray-800/50 !border !rounded-xl !text-white placeholder-gray-500 !focus:outline-none focus:ring-2 focus:ring-blue-500 !focus:border-transparent !transition-all"
+                  onFocus={e => {
+                    const borderColor = isValidPassword
+                      ? "#3b82f6"
+                      : hasPassword
+                        ? "#ef4444"
+                        : "#3b82f6";
+                    e.target.style.borderColor = borderColor;
+                    e.target.style.boxShadow =
+                      "0 0 0 2px rgba(59, 130, 246, 0.5)";
+                  }}
+                  onBlur={e => {
+                    e.target.style.boxShadow = "none";
+                    e.target.style.borderColor = getBorderColor();
+                  }}
+                />
+              );
+            })()}
+            <p className="mt-2 text-sm text-gray-400">
+              비밀번호는 최소 8자 이상이며, 영문, 숫자, 특수문자를 포함해야
+              합니다
+            </p>
             {errors.password && (
               <p className="mt-2 text-sm text-red-400">{errors.password}</p>
             )}
