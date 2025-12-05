@@ -228,28 +228,6 @@ export default function SignupPage() {
               <p className="mt-2 text-sm text-red-400">{errors.name}</p>
             )}
           </div>
-          {/* 닉네임 */}
-          <div>
-            <label
-              htmlFor="nickname"
-              className="block text-sm font-medium text-gray-300 mb-2"
-            >
-              닉네임 <span className="text-red-400">*</span>
-            </label>
-            <input
-              type="text"
-              id="nickname"
-              value={formData.nickname}
-              onChange={e => handleChange("nickname", e.target.value)}
-              placeholder="2자 이상 입력해주세요"
-              className={`w-full h-14 px-4 bg-gray-800/50 border ${
-                errors.nickname ? "border-red-500" : "border-gray-700"
-              } rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
-            />
-            {errors.nickname && (
-              <p className="mt-2 text-sm text-red-400">{errors.nickname}</p>
-            )}
-          </div>
 
           {/* 휴대폰 번호 */}
           <div>
