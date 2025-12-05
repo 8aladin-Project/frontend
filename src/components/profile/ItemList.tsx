@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { List } from "antd";
+import { Space } from "antd";
 import type { SellingItem } from "@/data/profile/sellingItems";
 import ItemRow from "@/components/profile/ItemRow";
 
@@ -19,12 +19,20 @@ export default function ItemList({ title, items, onItemClick }: ItemListProps) {
         <span className="text-base font-semibold pr-2">{items.length}개</span>
       </div>
 
-      <List
-        itemLayout="horizontal"
-        dataSource={items}
-        split={false}
-        renderItem={item => <ItemRow item={item} onClick={onItemClick} />}
-      />
+      {/* antd List 대신 antd Space + 커스텀 Row */}
+      <Space
+        orientation="vertical" // v6에서 direction 대신 orientation
+        size="middle"
+        className="w-full"
+      >
+        {items.map(item => (
+          <ItemRow
+            key={item.id} // 없으면 다른 고유값 사용
+            item={item}
+            onClick={onItemClick}
+          />
+        ))}
+      </Space>
     </div>
   );
 }
